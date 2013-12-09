@@ -1,3 +1,5 @@
+var express = require('express');
+var app = express();
 var http = require('http');
 
 // Constructor that keeps information that is quried with weather-map server
@@ -15,22 +17,20 @@ function callBack_data(response)
    this.weather_city_maps = {};
 }
 
-// application is running on port 8124 on localhost 
-http.createServer(function (request, response) {
-  response.writeHead(200, {'Content-Type': 'text/plain'});
-  try {
+app.get('/', function(req, res){
+  //res.send('Hello World');
+  //res.send('hello world');
+   try {
   // Pass the response to be filled once we get information from weather-map server
-  var cb_data = new callBack_data(response);
+  var cb_data = new callBack_data(res);
   fetch_weather_info(cb_data);
   } catch (err) {
 	  console.log("Error in handling request:", err);
   }
+});
 
-}).listen(8124);
-
-// Info log to be displayed to the user
-console.log('Server running at http://127.0.0.1:8124/');
-
+app.listen(3000);
+console.log('Server running at http://127.0.0.1:3000/');
 
 function createInfoNode(map_key, rsp_code, data, cb_data)
 {
